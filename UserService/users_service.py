@@ -1,15 +1,15 @@
 import uvicorn
 from fastapi import Request, FastAPI
 
-from User import User
+from UserDTO import UserDTO
 
 app = FastAPI()
 
-users_dictionary = []
+users_dictionary = {}
 
 
 @app.get("/")
-async def root():
+def root():
     return {"message": "Hello Users Service"}
 
 
@@ -17,12 +17,29 @@ async def root():
 async def create_user(request: Request):
     request_body = await request.json()
 
-    user = User(request_body['name'],
+    user = UserDTO(
+                request_body['id'],
+                request_body['name'],
+                request_body['age'],
+                request_body['address']
+    )
+
+    users_dictionary[request_body['id']] = user
+    return users_dictionary
+
+
+@app.delete("/delete")
+def delete_user(request: Request):
+    request_body = request.json()
+
+    user = UserDTO(request_body['id'],
+                request_body['name'],
                 request_body['age'],
                 request_body['address'])
 
-    users_dictionary.append(user)
+    users_dictionary.remove(user)
     return users_dictionary
+
 
 
 @app.get("/getall")
