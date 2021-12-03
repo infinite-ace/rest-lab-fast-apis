@@ -6,6 +6,7 @@ from UserDTO import UserDTO
 app = FastAPI()
 
 users_dictionary = {}
+users_count = 0
 
 
 #   Example:
@@ -21,29 +22,21 @@ users_dictionary = {}
 
 
 @app.post("/create")
-async def create_user(user: UserDTO):
-
-    users_dictionary[user.id] = user
+def create_user(user: UserDTO):
+    users_dictionary[len(users_dictionary)] = user
     return user
 
 
 @app.delete("/delete")
-def delete_user(request: Request):
-    request_body = request.json()
+def delete_user(id: int):
 
-    user = UserDTO.create(
-        request_body['id'],
-        request_body['name'],
-        request_body['age'],
-        request_body['address']
-    )
-
-    users_dictionary.remove(user)
+    users_dictionary.pop(id, None)
     return users_dictionary
 
 
-@app.get("/getall")
+@app.get("/all")
 async def get_all_users():
+    print(users_count)
     return users_dictionary
 
 
