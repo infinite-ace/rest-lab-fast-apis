@@ -2,4 +2,8 @@
 
 You can run the application by executing the following command:
 
-`uvicorn user_service:app --reload`
+`uvicorn users_service:app --reload`
+
+or
+
+`python users_service.py `
