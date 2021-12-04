@@ -1,4 +1,5 @@
 import uvicorn
+import requests
 from fastapi import Request, FastAPI
 
 from UserDTO import UserDTO
@@ -23,7 +24,14 @@ users_count = 0
 
 @app.post("/create")
 def create_user(user: UserDTO):
-    users_dictionary[len(users_dictionary)] = user
+
+    # obj = {len(users_dictionary): user.address}
+    id = len(users_dictionary)
+    address = user.address
+    response = requests.post(f"http://127.0.0.1:8001/address?id={id}&address={address}").text
+    dict_length = len(users_dictionary)
+
+    users_dictionary[dict_length] = user
     return user
 
 
