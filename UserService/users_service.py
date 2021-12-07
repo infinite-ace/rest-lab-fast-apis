@@ -1,5 +1,6 @@
 import uvicorn
 import requests
+import uuid
 from fastapi import Request, FastAPI
 
 from UserDTO import UserDTO
@@ -25,18 +26,17 @@ users_count = 0
 @app.post("/create")
 def create_user(user: UserDTO):
 
-    # obj = {len(users_dictionary): user.address}
-    id = len(users_dictionary)
+    user_uuid = str(uuid.uuid4())
     address = user.address
-    response = requests.post(f"http://127.0.0.1:8001/address?id={id}&address={address}").text
-    dict_length = len(users_dictionary)
 
-    users_dictionary[dict_length] = user
+    requests.post(f"http://127.0.0.1:8001/address?id={user_uuid}&address={address}").text
+
+    users_dictionary[user_uuid] = user
     return user
 
 
 @app.delete("/delete")
-def delete_user(id: int):
+def delete_user(id: str):
 
     users_dictionary.pop(id, None)
     return users_dictionary
