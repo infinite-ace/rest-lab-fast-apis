@@ -29,7 +29,7 @@ def create_user(user: UserDTO):
     user.id = user_uuid
     address = user.address = user.address
 
-    requests.post(f"http://127.0.0.1:8001/address?id={user_uuid}&address={address}").text
+    requests.post(f"http://127.0.0.1:8001/create?id={user_uuid}&address={address}").text
 
     users_dictionary[user_uuid] = user
     return user
